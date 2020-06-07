@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.6.2")
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+//    testCompileOnly 'junit:junit:4.13'
+//    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.6.2'
+
+    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner
+    testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.5.2'
+
+}
+test {
+    useJUnitPlatform {
+//        includeTags 'fast', 'smoke & feature-a'
+        // excludeTags 'slow', 'ci'
+//        includeEngines 'junit-jupiter'
+        // excludeEngines 'junit-vintage'
+    }
+}
