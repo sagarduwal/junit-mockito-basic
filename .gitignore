@@ -24,3 +24,6 @@ hs_err_pid*
 
 #ignore for IDE
 .idea
+.gradle
+**/build
+**/.gradle
