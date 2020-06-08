@@ -97,8 +97,10 @@ public class OrderBOImplTest {
         Order order = new Order();
         order.setId(1);
 
+        /*
+        * In the case where READING order from DAO returns error
+        * */
         when(orderDAO.read(order.getId())).thenThrow(new SQLException());
-
 //        when(orderDAO.update(order)).thenReturn(0);
 
         boolean result = bo.cancelOrder(order.getId());
@@ -112,21 +114,45 @@ public class OrderBOImplTest {
 
         when(orderDAO.read(order.getId())).thenReturn(order);
 
+        /*
+         * In the case where UPDATING order from DAO returns error
+         * */
         when(orderDAO.update(order)).thenThrow(new SQLException());
 
         boolean result = bo.cancelOrder(order.getId());
-
     }
 
     @Test
-    public void deleteOrder() {
+    public void deleteOrder_should_delete_successfully() throws SQLException, BOException {
+        Order order = new Order();
+        order.setId(1);
+
+        when(orderDAO.delete(order.getId())).thenReturn(1);
+        boolean result = bo.deleteOrder(order.getId());
+
+        assertTrue(result);
+        verify(orderDAO).delete(order.getId());
     }
 
     @Test
-    public void getOrderDAO() {
+    public void deleteOrder_should_fail_delete_order() throws SQLException, BOException {
+        Order order = new Order();
+        order.setId(1);
+
+        when(orderDAO.delete(order.getId())).thenReturn(0);
+        boolean result = bo.deleteOrder(order.getId());
+
+        assertFalse(result);
+        verify(orderDAO).delete(order.getId());
     }
 
-    @Test
-    public void setOrderDAO() {
+    @Test(expected = BOException.class)
+    public void deleteOrder_should_fail_with_exception() throws SQLException, BOException {
+        Order order = new Order();
+        order.setId(1);
+
+        when(orderDAO.delete(order.getId())).thenThrow(new SQLException());
+        boolean result = bo.deleteOrder(order.getId());
     }
+
 }
